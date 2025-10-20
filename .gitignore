@@ -1,13 +1,8 @@
-# 모든 걸 무시
-/*
-
-# .gitignore 파일 자체는 추적
 !.gitignore
-
-# frontend/backend 폴더만 허용
+!/frontend/
+!/frontend/backend/
 !/frontend/backend/**
 
-# ── frontend/backend 내부에서도 제외할 것들 ──
 /frontend/backend/venv/
 /frontend/backend/__pycache__/
 /frontend/backend/.env
