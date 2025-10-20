@@ -3,8 +3,10 @@
 !/frontend/backend/
 !/frontend/backend/**
 
+# ── 제외할 항목들 ──
+__pycache__/
+*.pyc
 /frontend/backend/venv/
-/frontend/backend/__pycache__/
 /frontend/backend/.env
 /frontend/backend/.vscode/
 /frontend/backend/static/uploads/*
