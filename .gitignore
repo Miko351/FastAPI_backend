@@ -9,5 +9,4 @@ __pycache__/
 /frontend/backend/venv/
 /frontend/backend/.env
 /frontend/backend/.vscode/
-/frontend/backend/static/uploads/*
 !/frontend/backend/static/uploads/.gitkeep
