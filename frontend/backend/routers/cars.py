@@ -6,9 +6,9 @@ from pymongo import ReturnDocument
 from cloudinary import uploader
 import cloudinary
 
-from ..app.config import BaseConfig
-from ..app.models import CarCollection, CarModel, UpdateCarModel
-from ..app.authentication import AuthHandler
+from app.config import BaseConfig
+from app.models import CarCollection, CarModel, UpdateCarModel
+from app.authentication import AuthHandler
 
 settings = BaseConfig()
 router = APIRouter()

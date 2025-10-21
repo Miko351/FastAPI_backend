@@ -1,8 +1,8 @@
 from bson import ObjectId
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
-from ..app.authentication import AuthHandler
-from ..app.models import CurrentUserModel, LoginModel, UserModel
+from app.authentication import AuthHandler
+from app.models import CurrentUserModel, LoginModel, UserModel
 
 router = APIRouter()
 auth_handler = AuthHandler()
@@ -61,5 +61,5 @@ async def me(
 ):
     users = request.app.db["users"]
     currentUser = await users.find_one({"_id": ObjectId(user_data["user_id"])})
-    
+
     return CurrentUserModel(**currentUser)

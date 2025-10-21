@@ -7,8 +7,8 @@ from fastapi.encoders import jsonable_encoder
 from collections import defaultdict
 from starlette.staticfiles import StaticFiles
 from .config import BaseConfig
-from ..routers.cars import router as cars_router
-from ..routers.users import router as users_router
+from routers.cars import router as cars_router
+from routers.users import router as users_router
 from pathlib import Path
 import os
 
