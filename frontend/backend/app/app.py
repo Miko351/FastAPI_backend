@@ -21,7 +21,6 @@ STATIC_DIR = BASE_DIR / "static"
 (STATIC_DIR / "uploads").mkdir(parents=True, exist_ok=True)
 
 async def lifespan(app: FastAPI):
-    app.client = motor_asyncio.AsyncIOMotorClient(settings.DB_URL)
     app.client = motor_asyncio.AsyncIOMotorClient(
         settings.DB_URL,
         tls=True,
@@ -30,11 +29,13 @@ async def lifespan(app: FastAPI):
         serverSelectionTimeoutMS=15000,
     )
     app.db = app.client[settings.DB_NAME]
+
     try:
         await app.client.admin.command("ping")
-        print("Pinged your deployment. You have successfully connected to MongoDB!")
+        print("MongoDB ping OK")
     except Exception as e:
-        print(e)
+        print("MongoDB connect failed:", e)
+
     yield
     app.client.close()
 
