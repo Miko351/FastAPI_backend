@@ -12,6 +12,8 @@ from routers.users import router as users_router
 from pathlib import Path
 import os
 
+import certifi
+
 settings = BaseConfig()
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -20,6 +22,13 @@ STATIC_DIR = BASE_DIR / "static"
 
 async def lifespan(app: FastAPI):
     app.client = motor_asyncio.AsyncIOMotorClient(settings.DB_URL)
+    app.client = motor_asyncio.AsyncIOMotorClient(
+        settings.DB_URL,
+        tls=True,
+        tlsAllowInvalidCertificates=False,
+        tlsCAFile=certifi.where(), 
+        serverSelectionTimeoutMS=15000,
+    )
     app.db = app.client[settings.DB_NAME]
     try:
         await app.client.admin.command("ping")
