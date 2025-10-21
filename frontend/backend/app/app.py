@@ -8,7 +8,7 @@ from collections import defaultdict
 from starlette.staticfiles import StaticFiles
 from .config import BaseConfig
 from ..routers.cars import router as cars_router
-# from routers.users import router as users_router
+from ..routers.users import router as users_router
 from pathlib import Path
 import os
 
@@ -34,6 +34,8 @@ app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 app.include_router(cars_router, prefix="/cars", tags=["cars"])
+
+app.include_router(users_router, prefix="/users", tags=["users"])
 
 @app.get("/")
 async def get_root():

@@ -10,6 +10,7 @@ from pydantic import (
     field_serializer,
 )
 from pydantic_core import core_schema
+from pydantic import field_serializer
 
 
 class PyObjectId(ObjectId):
@@ -40,6 +41,7 @@ class CarModel(BaseModel):
     cm3: int = Field(..., gt=0, lt=5000)
     km: int = Field(..., gt=0, lt=500_000)
     price: int = Field(..., gt=0, lt=500_000_000)
+    user_id: str = Field(...)
     picture_url: Optional[str] = None
 
     @field_serializer("id")
@@ -73,7 +75,7 @@ class CarModel(BaseModel):
 class UpdateCarModel(BaseModel):
     brand: Optional[str] = None
     make: Optional[str] = None
-    year: Optional[int] = Field(default=None, gt=1970, lt=2025)
+    year: Optional[int] = Field(default=None, gt=1900, lt=2025)
     cm3: Optional[int] = Field(default=None, gt=0, lt=5000)
     km: Optional[int] = Field(default=None, gt=0, lt=500_000)
     price: Optional[int] = Field(default=None, gt=0, lt=500_000_000)
@@ -94,3 +96,41 @@ class UpdateCarModel(BaseModel):
 
 class CarCollection(BaseModel):
     cars: List[CarModel]
+
+class UserModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    username: str = Field(..., min_length=3, max_length=15)
+    password: str = Field(...)
+
+    @field_serializer("id")
+    def _ser_id(self, v):
+        return str(v) if v is not None else None
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+    )
+
+
+class LoginModel(BaseModel):
+    username: str = Field(...)
+    password: str = Field(...)
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+    )
+
+
+class CurrentUserModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    username: str = Field(..., min_length=3, max_length=15)
+
+    @field_serializer("id")
+    def _ser_id(self, v):
+        return str(v) if v is not None else None
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+    )

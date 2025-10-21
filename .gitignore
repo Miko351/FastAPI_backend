@@ -1,12 +1,24 @@
+# ── 기본 ──
+__pycache__/
+*.py[cod]
+*.log
+*.sqlite3
+
+# ── 환경 관련 ──
+/frontend/backend/venv/
+/frontend/backend/.env
+/frontend/backend/.vscode/
+
+# ── 선택 업로드 허용 ──
 !.gitignore
 !/frontend/
 !/frontend/backend/
 !/frontend/backend/**
 
-# ── 제외할 항목들 ──
-__pycache__/
-*.pyc
-/frontend/backend/venv/
-/frontend/backend/.env
-/frontend/backend/.vscode/
-!/frontend/backend/static/uploads/.gitkeep
+# ── 업로드 예외 허용 ──
+!/frontend/backend/static/uploads/
+!/frontend/backend/static/uploads/**
+
+# ── Render / 시스템 ──
+.DS_Store
+Thumbs.db

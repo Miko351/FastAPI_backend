@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, status, UploadFile, Form, HTTPException, File
+from fastapi import APIRouter, Request, status, UploadFile, Form, HTTPException, File, Depends
 from fastapi.responses import Response
 from bson import ObjectId
 from pymongo import ReturnDocument
@@ -8,6 +8,7 @@ import cloudinary
 
 from ..app.config import BaseConfig
 from ..app.models import CarCollection, CarModel, UpdateCarModel
+from ..app.authentication import AuthHandler
 
 settings = BaseConfig()
 router = APIRouter()
@@ -19,6 +20,7 @@ cloudinary.config(
     api_secret=settings.CLOUDINARY_SECRET_KEY,
 )
 
+auth_handler = AuthHandler()
 
 @router.post(
     "/",
@@ -36,12 +38,14 @@ async def add_car_with_picture(
     km: int = Form(...),
     price: int = Form(...),
     picture: UploadFile = File(...),
+    user: dict =Depends(auth_handler.auth_wrapper),
 ):
     cars = request.app.db["cars"]
 
     try:
         cloudinary_image = cloudinary.uploader.upload(
             picture.file,
+            folder="FARM2",
             crop="fill",
             width=800
         )
@@ -58,6 +62,7 @@ async def add_car_with_picture(
         km=km,
         price=price,
         picture_url=picture_url,
+        user_id=user["user_id"],
     )
 
     document = car.model_dump(by_alias=True, exclude=["id"])
